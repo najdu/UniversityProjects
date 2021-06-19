@@ -1,0 +1,9 @@
+nomreAval = 20;
+nomreDovom = 17.5;
+nomreSevom = 13.75;
+majmoe = nomreAval + nomreDovom + nomreSevom;
+moadel = majmoe % 3;
+
+a - b * 3 > a + b % 3 < 10;
+
+#$
