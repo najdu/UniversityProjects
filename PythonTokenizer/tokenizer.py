@@ -23,6 +23,8 @@ def tokenize(file):
     ]
     num_count = line_count = space_count = id_count = mismatch_count = 0
     tok_regex = '|'.join('(?P<%s>%s)' % pair for pair in token_specification)
+    print (tok_regex)
+    
     line_num = 1
     line_start = 0
     for mo in re.finditer(tok_regex, file):
