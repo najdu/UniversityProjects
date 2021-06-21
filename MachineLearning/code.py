@@ -1,6 +1,5 @@
 #------------------Dependencies
 from pandas import read_csv
-from pandas.plotting import scatter_matrix
 from matplotlib import pyplot
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
@@ -61,6 +60,7 @@ model.fit(X_train, Y_train)
 predictions = model.predict(X_validation)
 
 #------------------Printing the predictions
+print('\n\n\n')
 print(accuracy_score(Y_validation, predictions))
-print(confusion_matrix(Y_validation, predictions))
+print('\n')
 print(classification_report(Y_validation, predictions))

@@ -10,7 +10,6 @@ class Token(NamedTuple):
 
 #Tokenizer definition
 def tokenize(file):
-    keywords = {'IF', 'THEN', 'ENDIF', 'FOR', 'NEXT', 'GOSUB', 'RETURN'}
     token_specification = [
         ('NUMBER',   r'\d+(\.\d*)?'),  # Integer and float
         ('ASSIGN',   r'='),           # Assignment operator
@@ -18,12 +17,11 @@ def tokenize(file):
         ('ID',       r'[A-Za-z]+'),    # Identifiers
         ('OP',       r'[+\-<>*%]'),      # Arithmetic operators
         ('NEWLINE',  r'\n'),           # Line endings
-        ('SKIP',     r'[ \t]+'),       # Skip over spaces and tabs
+        ('SPACE',     r'[ \t]+'),       # Skip over spaces and tabs
         ('MISMATCH', r'.'),            # Any other character
     ]
-    num_count = line_count = space_count = id_count = mismatch_count = 0
+    int_count = line_count = space_count = id_count = mismatch_count = float_count = 0
     tok_regex = '|'.join('(?P<%s>%s)' % pair for pair in token_specification)
-    print (tok_regex)
     
     line_num = 1
     line_start = 0
@@ -32,17 +30,20 @@ def tokenize(file):
         value = mo.group()
         column = mo.start() - line_start
         if kind == 'NUMBER':
-            value = float(value) if '.' in value else int(value)
-            num_count += 1
-        elif kind == 'ID' and value in keywords:
-            kind = value
+            if '.' in value:
+                value = float(value)
+                float_count += 1
+            else:
+                value = int(value)
+                int_count += 1
+        elif kind == 'ID':
             id_count += 1
         elif kind == 'NEWLINE':
             line_start = mo.end()
             line_num += 1
             line_count += 1
             continue
-        elif kind == 'SKIP':
+        elif kind == 'SPACE':
             space_count += 1
             continue
         elif kind == 'MISMATCH':
@@ -52,10 +53,12 @@ def tokenize(file):
     print(f'''
 
     Line count: {line_count}
-    Number count: {num_count}
+    Integer count: {int_count}
+    Float count: {float_count}
     Space count: {space_count}
     ID count: {id_count}
     Mismatch count: {mismatch_count}
+    
 
     ''')
 
