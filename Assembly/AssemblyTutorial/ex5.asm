@@ -3,6 +3,8 @@ section .data
 	addr DB "yellow", 0x0a
 section .text
 _start:
+	mov [addr], byte 'H'
+	mov [addr + 5], byte '!' 
 	mov eax, 4
 	mov ebx, 1
 	mov ecx, addr
