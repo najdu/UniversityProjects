@@ -7,8 +7,12 @@ Developed by Najdu
 # import dependencies
 import os
 import tkinter as tk
+from tracemalloc import start
 from PIL import Image, ImageTk
 import ctypes
+from click import command
+import keyboard
+import subprocess
 
 # get screen resolution
 _user32 = ctypes.windll.user32
@@ -19,6 +23,8 @@ ICON_SIZE = 64
 
 # set path to desktop background and save in {desktop}
 _appdata = os.getenv('APPDATA')
+_user = os.getenv('USERPROFILE')
+
 desktopPath = '{}\\Microsoft\\Windows\\Themes\\TranscodedWallpaper'.format(_appdata)
 dsk = Image.open(os.path.realpath(desktopPath)).resize((WIDTH, HEIGHT))
 mpc = Image.open(os.path.realpath("./mypc.ico")).resize((ICON_SIZE, ICON_SIZE))
@@ -29,16 +35,21 @@ expl = Image.open(os.path.realpath("./folder.ico")).resize((ICON_SIZE, ICON_SIZE
 root = tk.Tk()
 
 def mycomputer():
-    pass
+    subprocess.Popen('explorer /select,"This PC"')
 def trash():
     pass
 def explorer():
-    pass
+    subprocess.Popen('explorer')
+def startkey():
+    keyboard.send('win')
 
-frame = tk.Frame(root,bg='grey')
 _desktop = ImageTk.PhotoImage(dsk, root)
 desktop = tk.Label(root, image=_desktop, width=WIDTH, height=HEIGHT)
 desktop.pack()
+
+taskbar = tk.Button(root, width=ICON_SIZE, height=HEIGHT,bg='black', fg='white',
+                    text='Start', command=startkey)
+taskbar.place(relheight=0.05, relwidth=1.0, rely= 0.95)
 
 _mypc = ImageTk.PhotoImage (mpc, root)
 mypc = tk.Button(root, image=_mypc, command=mycomputer)
